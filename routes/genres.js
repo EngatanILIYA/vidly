@@ -1,0 +1,68 @@
+const {Genre, validate} = require('../models/genre');
+const mongoose = require('mongoose');
+const express = require('express');
+const e = require('express');
+const router = express.Router();
+
+router.get('/', async (req, res) => {
+  const genres = await Genre.find().sort('name');
+  res.send(genres);
+});
+
+router.post('/', async (req, res) => {
+  try {
+    const { error } = validate(req.body); 
+  if (error) return res.status(400).send(error.details[0].message);
+
+  let genre = new Genre({ name: req.body.name });
+  genre = await genre.save();
+  
+  res.json({
+      message: "Uploaded Successfully...",
+      genre: {
+          name: genre.name 
+      }
+  });
+
+  } catch (error) {
+    console.log(error)
+  }
+});
+
+router.put('/:id', async (req, res) => {
+  const { error } = validate(req.body); 
+  if (error) return res.status(400).send(error.details[0].message);
+
+  const genre = await Genre.findByIdAndUpdate(req.params.id, { name: req.body.name }, {
+    new: true
+  });
+
+  if (!genre) return res.status(404).send('The genre with the given ID was not found.');
+  
+  res.json({
+      message: "Successfully Updated...",
+      genre: {
+          name: genre.name
+      }
+  });
+});
+
+router.delete('/:id', async (req, res) => {
+  const genre = await Genre.findByIdAndRemove(req.params.id);
+
+  if (!genre) return res.status(404).send('The genre with the given ID was not found.');
+
+  res.json({
+        message: "Deleted Successfully..."
+    });
+});
+
+router.get('/:id', async (req, res) => {
+  const genre = await Genre.findById(req.params.id);
+
+  if (!genre) return res.status(404).send('The genre with the given ID was not found.');
+
+  res.send(genre)
+});
+
+module.exports = router;
