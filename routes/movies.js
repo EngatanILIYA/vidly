@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
 
     try {
         const { error } = validate(req.body);
-        if (error) return res.status(400).send(error);
+        if (error) return res.status(400).json({message: error.details[0].message});
 
         const genre = await Genre.findById(req.body.genreId);
         if (!genre) return res.status(400).send('Invalid Genre...');

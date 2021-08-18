@@ -6,13 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js"
-
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.2",
+    "fawn": "^2.1.5",
     "joi": "^13.1.0",
     "mongoose": "^5.0.2"
   },
