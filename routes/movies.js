@@ -72,7 +72,7 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        const movie = await Movie.findByIdAndRemove(req.p/arams.id);
+        const movie = await Movie.findByIdAndRemove(req.params.id);
     
         if (!movie) return res.status(400).send('The Movie With The Given ID Was Not Found...');
         
@@ -81,6 +81,7 @@ router.delete('/:id', async (req, res) => {
         })
         
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ error: "Somthing Went Wrong..."})
     }
 });
